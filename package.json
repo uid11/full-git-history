@@ -26,5 +26,13 @@
     "node": ">= 6.0.0"
   },
   "author": "uid-11222",
-  "license": "MIT"
+  "bugs": {
+    "url": "https://github.com/uid-11222/full-git-history/issues"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/uid-11222/full-git-history",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uid-11222/full-git-history"
+  }
 }
