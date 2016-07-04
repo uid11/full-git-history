@@ -1,6 +1,0 @@
-NEW
-ADD
-<<<<<<< HEAD
-ADD
-=======
->>>>>>> 032fee4... Only new!
