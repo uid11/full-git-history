@@ -1,0 +1,30 @@
+{
+  "name": "full-git-history",
+  "version": "0.1.0",
+  "description": "Get and save a complete history of git-repository in file in JSON format.",
+  "main": "src/full-git-history.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha",
+    "check": "./test/check-history.js"
+  },
+  "bin": {
+    "full-git-history": "./src/full-git-history.js",
+    "check-history": "./test/check-history.js"
+  },
+  "keywords": [
+    "git",
+    "history",
+    "json",
+    "full history",
+    "gitk"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^2.0.0"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "author": "uid-11222",
+  "license": "MIT"
+}
