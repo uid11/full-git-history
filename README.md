@@ -2,7 +2,7 @@
 
   [![NPM version][npm-image]][npm-url]
 
-  full-git-history extract all raw history (not only from the current branch) from the git-repository (by path) and stores it into the json-file with the given name.
+  full-git-history extract all raw history (not only from the current branch) in an asynchronous non-blocking manner from the git-repository (by path) and stores it into the json-file with the given name.
   After this, the json-data can be used for plotting graphs, calculating statistics, searching commits, and so on.
   Raw history include all information from repository except blobs and trees object (i.e. all commits, tags, local and remote branches, symbolic refs, stash).
 
