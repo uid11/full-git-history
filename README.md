@@ -176,6 +176,8 @@ Value of field "size" for ref is the size of the object in bytes (the same as gi
 
 "stash" is an optional field containing a ref .git/refs/stash, if it exists.
 
+All dates in JSON has strict ISO 8601 format.
+
 See "git help rev-list" and "git help for-each-ref" for a detailed description of all this fields.
 
 ## Tests ##
