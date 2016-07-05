@@ -1,6 +1,6 @@
 {
   "name": "full-git-history",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Get and save a complete history of git-repository in file in JSON format.",
   "main": "src/full-git-history.js",
   "scripts": {

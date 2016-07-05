@@ -171,10 +171,10 @@ REFS is a hash of symbolic refs (usually just HEAD, but also may be FETCH_HEAD, 
 See "git help rev-list" and "git help for-each-ref" for a detailed description of all this fields.
 
 ## Tests ##
+To run the test suite, first install the dependencies (only Mocha), then run npm test:
 ```bash
 $ npm test
 ```
-Use Mocha.
 
 For checking file /path/history.json with history:
 
@@ -183,6 +183,7 @@ $ npm run check /path/history.json
 ```
 
 ## License ##
-  MIT
+  [MIT](LICENSE)
 
+[npm-image]: https://img.shields.io/npm/v/full-git-history.svg
 [npm-url]: https://www.npmjs.com/package/full-git-history "full-git-history"
