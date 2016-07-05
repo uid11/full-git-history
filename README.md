@@ -1,8 +1,8 @@
 # full-git-history #
 
-  [![NPM version][npm-image]][npm-url] [![node](https://img.shields.io/badge/node-v6.0.0-brightgreen.svg?maxAge=2592000)]() [![Gemnasium](https://img.shields.io/gemnasium/mathiasbynens/he.svg?maxAge=2592000)]() ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
+  [![NPM version][npm-image]][npm-url] ![node][node-image] ![dependencies][dependencies-image] [![License MIT][license-image]](LICENSE)
 
-  full-git-history extract all raw history (not only from the current branch) in an asynchronous non-blocking manner from the git-repository (by path) and stores it into the json-file with the given name.
+  **full-git-history** extract all raw history (not only from the current branch) in an asynchronous non-blocking manner from the git-repository (by path) and stores it into the json-file with the given name.
   After this, the json-data can be used for plotting graphs, calculating statistics, searching commits, and so on.
   Raw history include all information from repository except blobs and trees object (i.e. all commits, tags, local and remote branches, symbolic refs, stash).
 
@@ -42,7 +42,7 @@ fullGitHistory(['../foo-project', '-o', '/foo-history.json'], error => {
 ```
 Function checkHistory('/foo-history.json') check history in file and print some general information about repository and history errors (it is only for debug).
 
-full-git-history work fine with world biggest git-repositories (like [Chromium](https://chromium.googlesource.com/chromium/src/), [Gecko](https://github.com/mozilla/gecko-dev), [parts of linux kernel](https://git.kernel.org/cgit/linux/kernel/git/clk/linux.git/) -- each repository include about 500 000 commits), but in this case the output file will be automatically separated into several parts (all parts are valid json-files, which should be mixed) due to a max string size limit in the V8 ([https://github.com/nodejs/node/issues/3175](https://github.com/nodejs/node/issues/3175)).
+**full-git-history** work fine with world biggest git-repositories (like [Chromium](https://chromium.googlesource.com/chromium/src/), [Gecko](https://github.com/mozilla/gecko-dev), [parts of linux kernel](https://git.kernel.org/cgit/linux/kernel/git/clk/linux.git/) -- each repository include about 500 000 commits), but in this case the output file will be automatically separated into several parts (all parts are valid json-files, which should be mixed) due to a max string size limit in the V8 ([https://github.com/nodejs/node/issues/3175](https://github.com/nodejs/node/issues/3175)).
 Also for checking such a large object, you should use the increase memory limit for the node (only for checking, not for getting history):
 
 ```bash
@@ -203,5 +203,8 @@ $ npm run check /path/history.json
 ## License ##
   [MIT](LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/full-git-history.svg
+[license-image]: https://img.shields.io/badge/license-MIT-blue.svg "license-image"
+[dependencies-image]: https://img.shields.io/gemnasium/mathiasbynens/he.svg?maxAge=2592000 "dependencies-image"
+[node-image]: https://img.shields.io/badge/node-v6.0.0-brightgreen.svg?maxAge=2592000 "node-image"
+[npm-image]: https://img.shields.io/npm/v/full-git-history.svg "npm-image"
 [npm-url]: https://www.npmjs.com/package/full-git-history "full-git-history"
