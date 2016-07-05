@@ -51,7 +51,7 @@ $ node --max-old-space-size=8192 ~/JS/full-git-history/test/check-history.js big
 See [fatal-error-call-and-retry-last-allocation-failed-process-out-of-memory](http://stackoverflow.com/questions/26094420/fatal-error-call-and-retry-last-allocation-failed-process-out-of-memory) for details.
 
 ## History format ##
-Here is an example of the resulting json-history with all mandatory fields:
+Here is an example of the resulting json-history with all mandatory and some optional fields:
 
 ```json
 {
@@ -69,6 +69,7 @@ Here is an example of the resulting json-history with all mandatory fields:
         "date": "2016-07-04T08:49:16+03:00"
       },
       "message": "Fix \"send error arg to callback\" test.",
+      "encoding": "ISO-8859-2",
       "refs": [
           "HEAD",
           "origin/other",
@@ -94,7 +95,12 @@ Here is an example of the resulting json-history with all mandatory fields:
         "tg13",
         "tag18",
         "v1.2"
-      ]
+      ],
+      "GPG": {
+        "type": "G",
+        "name": "uid-11222 <uid.11222@gmail.com>",
+        "key": "3757A74B1FDB2FFF"
+      }
     }
   ],
   "REFS": {
@@ -163,7 +169,9 @@ Here is an example of the resulting json-history with all mandatory fields:
 ```
 Fields "tags" and "refs" are optional for commit object.
 Field "refs" for commit include all refs to this commits except tags -- branches, remote branches, symbolic refs.
-Also there are optional fields "encoding", "reflog" and "GPG" for commits.
+Field "GPG" is optinal for commit (only for signed commits).
+Field "encoding" is optional for commit (only for non-default encoding).
+Also there is optional field "reflog" for commits.
 Commits has reverse chronological order -- from newest to oldest.
 
 Fields "upstream" and "push" are optional for ref object.
