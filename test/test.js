@@ -5,13 +5,6 @@ const fs = require('fs'),
       fullGitHistory = require('../src/full-git-history'),
       checkHistory   = require('./check-history');
 
-try {
-  /**
-   * npm always ingore dir ".git", so for we keep test repository in dir "git".
-   */
-  fs.renameSync('git', '.git');
-} catch(e) {}
-
 
 const assert = (value, msg) => {
   if (value !== true) throw Error('Assert ' + (msg || ''));
@@ -42,7 +35,9 @@ const hasOwn = Object.prototype.hasOwnProperty,
       OTHER = `${TMP}other.json`,
       NOT_EXISTS = `NOT_EXISTS_FILE.json`,
       EMPTY = `${TMP}empty.json`,
-      INCORRECT = `${TMP}incorrect.json`;
+      INCORRECT = `${TMP}incorrect.json`,
+      REPO_ORIG = `${GIT}/git`,
+      REPO = `${GIT}/.git`;
 
 const TYPES = ['commit', 'tag', 'tree', 'blob'];
 
@@ -112,6 +107,13 @@ const readJSON = name =>
 describe('API', function() {
 
   it('exists', function() {
+
+    try {
+      /**
+       * npm always ingore dir ".git", so for we keep test repository in dir "git".
+       */
+      fs.renameSync(REPO_ORIG, REPO);
+    } catch(e) {}
 
     assert(typeof fullGitHistory === 'function');
 
@@ -1243,6 +1245,15 @@ describe('check-history', function() {
       checkHistory(INCORRECT);
     } catch (e) {
       return;
+    } finally {
+
+      try {
+        /**
+         * Reverse the renaming.
+         */
+        fs.renameSync(REPO, REPO_ORIG);
+      } catch(e) {}
+
     }
 
     assert(false);
