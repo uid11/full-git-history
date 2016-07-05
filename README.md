@@ -153,6 +153,11 @@ Here is an example of the resulting json-history with all mandatory fields:
         "size": 222
       }
     }
+  },
+  "stash": {
+    "sha1": "b817416d8e65eb6292fc3d63fc7526be9478b461",
+    "type": "commit",
+    "size": 306
   }
 }
 ```
@@ -165,9 +170,11 @@ Fields "upstream" and "push" are optional for ref object.
 Field "HEAD" is optional for ref (true, if HEAD link to this ref).
 v1.3 is lightweight tag, and v1.2 is annotated tag.
 Value of fields "type" and "objecttype" for ref is one of "commit", "tag", "tree", "blob".
-Value of field "size" for ref is the size of the object (the same as git cat-file -s reports).
+Value of field "size" for ref is the size of the object in bytes (the same as git cat-file -s reports).
 
-REFS is a hash of symbolic refs (usually just HEAD, but also may be FETCH_HEAD, MERGE_HEAD, CHERRY_PICK_HEAD etc).
+"REFS" is a hash of symbolic refs (usually just HEAD, but also may be FETCH_HEAD, MERGE_HEAD, CHERRY_PICK_HEAD etc).
+
+"stash" is an optional field containing a ref .git/refs/stash, if it exists.
 
 See "git help rev-list" and "git help for-each-ref" for a detailed description of all this fields.
 
