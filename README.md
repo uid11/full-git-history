@@ -7,7 +7,7 @@
   Raw history include all information from repository except blobs and trees object (i.e. all commits, tags, local and remote branches, symbolic refs, stash).
 
 ## Usage ##
-Of course, you must have installed Git.
+You need a node version >=6.0.0. Of course, you must have installed Git.
 Let /path/to/foo-project -- path to some git-project (i.e. it contains ".git" directory).
 ```bash
 $ npm install full-git-history -g
@@ -159,6 +159,7 @@ Here is an example of the resulting json-history with all mandatory fields:
 Fields "tags" and "refs" are optional for commit object.
 Field "refs" for commit include all refs to this commits except tags -- branches, remote branches, symbolic refs.
 Also there are optional fields "encoding", "reflog" and "GPG" for commits.
+Commits has reverse chronological order -- from newest to oldest.
 
 Fields "upstream" and "push" are optional for ref object.
 Field "HEAD" is optional for ref (true, if HEAD link to this ref).
