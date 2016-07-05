@@ -1,9 +1,12 @@
+# full-git-history #
+
+  [![NPM version][npm-image]][npm-url]
+
   full-git-history extract all raw history (not only from the current branch) from the git-repository (by path) and stores it into the json-file with the given name.
   After this, the json-data can be used for plotting graphs, calculating statistics, searching commits, and so on.
   Raw history include all information from repository except blobs and trees object (i.e. all commits, tags, local and remote branches, symbolic refs, stash).
 
-## Usage
-
+## Usage ##
 Of course, you must have installed Git.
 Let /path/to/foo-project -- path to some git-project (i.e. it contains ".git" directory).
 ```bash
@@ -47,10 +50,10 @@ $ node --max-old-space-size=8192 ~/JS/full-git-history/test/check-history.js big
 ```
 See [fatal-error-call-and-retry-last-allocation-failed-process-out-of-memory](http://stackoverflow.com/questions/26094420/fatal-error-call-and-retry-last-allocation-failed-process-out-of-memory) for details.
 
-## History format
+## History format ##
 Here is an example of the resulting json-history with all mandatory fields:
 
-```js
+```json
 {
   "commits": [
     {
@@ -167,21 +170,19 @@ REFS is a hash of symbolic refs (usually just HEAD, but also may be FETCH_HEAD, 
 
 See "git help rev-list" and "git help for-each-ref" for a detailed description of all this fields.
 
-## Tests
-
+## Tests ##
 ```bash
-npm test
+$ npm test
 ```
 Use Mocha.
 
 For checking file /path/history.json with history:
 
 ```bash
-npm run check /path/history.json
+$ npm run check /path/history.json
 ```
 
-# License
-
+## License ##
   MIT
 
 [npm-url]: https://www.npmjs.com/package/full-git-history "full-git-history"

@@ -1,6 +1,6 @@
 {
   "name": "full-git-history",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Get and save a complete history of git-repository in file in JSON format.",
   "main": "src/full-git-history.js",
   "scripts": {
@@ -20,7 +20,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "mocha": "^2.0.0"
+    "mocha": ">=2.0.0"
   },
   "engines": {
     "node": ">= 6.0.0"
