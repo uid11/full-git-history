@@ -1,6 +1,6 @@
 # full-git-history #
 
-  [![NPM version][npm-image]][npm-url]
+  [![NPM version][npm-image]][npm-url] [![node](https://img.shields.io/node/v/gh-badges.svg?maxAge=2592000)]() [![Gemnasium](https://img.shields.io/gemnasium/mathiasbynens/he.svg?maxAge=2592000)]() ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
   full-git-history extract all raw history (not only from the current branch) in an asynchronous non-blocking manner from the git-repository (by path) and stores it into the json-file with the given name.
   After this, the json-data can be used for plotting graphs, calculating statistics, searching commits, and so on.
