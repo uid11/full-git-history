@@ -15,8 +15,12 @@ $ full-git-history /path/to/foo-project -o ~/bar/foo-project-history.json
 ```
 Arguments order is not important, just use -o before output filename. Paths can be absolute or relative.
 
-Also you can install package locally or use it programmatically:
+Get some statistics of the repository and a list of errors (useful only for debugging):
+```bash
+$ check-history ~/bar/foo-project-history.json
+```
 
+Also you can install package locally or use it programmatically:
 ```js
 const fullGitHistory = require('full-git-history'),
       checkHistory = require('full-git-history/test/check-history');
@@ -40,7 +44,7 @@ fullGitHistory(['../foo-project', '-o', '/foo-history.json'], error => {
 
 });
 ```
-Function checkHistory('/foo-history.json') check history in file (synchronously) and print some general information about repository and history errors (it is only for debug).
+Function checkHistory('/foo-history.json') check history in file (synchronously) and print some general information about the repository and history errors.
 
 **full-git-history** work fine with world biggest git-repositories (like [Chromium](https://chromium.googlesource.com/chromium/src/), [Gecko](https://github.com/mozilla/gecko-dev), [parts of linux kernel](https://git.kernel.org/cgit/linux/kernel/git/clk/linux.git/) -- each repository include about 500 000 commits), but in this case the output file will be automatically separated into several parts (all parts are valid json-files, which should be mixed) due to a max string size limit in the V8 ([https://github.com/nodejs/node/issues/3175](https://github.com/nodejs/node/issues/3175)).
 Also for checking such a large object, you should use the increase memory limit for the node (only for checking, not for getting history):
@@ -52,7 +56,6 @@ See [fatal-error-call-and-retry-last-allocation-failed-process-out-of-memory](ht
 
 ## History format ##
 Here is an synthetic (not self-consistent) example of the resulting json-history with all mandatory and some optional fields:
-
 ```json
 {
   "commits": [
@@ -197,7 +200,6 @@ $ npm test
 ```
 
 For checking file /path/history.json with history:
-
 ```bash
 $ npm run check /path/history.json
 ```

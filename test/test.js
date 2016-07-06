@@ -110,7 +110,7 @@ describe('API', function() {
 
     try {
       /**
-       * npm always ingore dir ".git", so for we keep test repository in dir "git".
+       * npm always ignore dir ".git", so we keep test repository in dir "git".
        */
       fs.renameSync(REPO_ORIG, REPO);
     } catch(e) {}
@@ -146,6 +146,7 @@ describe('API', function() {
     try {
       fullGitHistory([GIT, '-o', FILE, 'C']);
     } catch(e) {
+      if (e.message.indexOf('extra option') >=0 ) return;
       return;
     }
 
@@ -153,12 +154,12 @@ describe('API', function() {
 
   });
 
-  it('do not work with extra in custom order args', function() {
+  it('do not work with extra args in custom order', function() {
 
     try {
       fullGitHistory(['-o', FILE, GIT, 'C']);
     } catch(e) {
-      return;
+      if (e.message.indexOf('extra option') >=0 ) return;
     }
 
     assert(false);

@@ -20,7 +20,6 @@ const KB = 1024, MB = 1024 * KB,
       MAX_OUT_REFS = Math.round(MAX_OUT_SIZE / MAX_REF_SIZE),
       TOLERANCE_SIZE = 8 * MB;
 
-
 const REFS = ['heads', 'tags', 'remotes'],
       FULL_REFS = REFS.map(key => `refs/${key}/`);
 
@@ -230,7 +229,7 @@ const fullGitHistory = (args, callback = defaultCallback) => {
       obj.objecttype = lines[4];
       obj.object = lines[5];
       obj.tagger = {
-        user: { name: lines[6], email: email },
+        user: { name: lines[6], email },
         date: lines[8]
       };
       obj.message = lines.slice(12).join('\n');
