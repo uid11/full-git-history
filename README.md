@@ -170,6 +170,41 @@ Here is an synthetic (not self-consistent) example of the resulting json-history
   }
 }
 ```
+v1.3 is lightweight tag, and v1.2 is annotated tag.
+
+**history** fields:
+ * "commits": array of all commits in reverse chronological order (from newest to oldest)
+ * "heads": object with all local branches; key — branch name, value — branch ref object
+ * "tags": object with all tags; key — tag name, value — tag ref object
+ * "remotes": object with all remotes; key — remote name, value — remote object
+ * "REFS": object with all *symbolic* refs (usually just HEAD, but also may be FETCH_HEAD, MERGE_HEAD, CHERRY_PICK_HEAD etc); key — symbolic ref name, value — string with ref value (name of some ref or sha1 of commit)
+ * *"stash"*: optional field with stash-ref object (containing a ref .git/refs/stash, if it exists)
+
+**commit** fields:
+ * "sha1": string of 40 chars with sha1
+ * "parents": array with sha1-strings of all commit parents; there are usually only one parent, but array may be empty (for initial commits) or contain several string (for merge commits)
+ * "tree": string of 40 chars with sha1 of commit tree
+ * "author": user object of author
+ * "committer": user object of committer
+ * "message": message string
+ * *"GPG"*: optional field with GPG object (only for signed commits)
+ * *"encoding"*: optional field with encoding string (only for non-default encoding)
+ * *"reflog"*: optional field with reflog object
+
+**ref** fields:
+ * "sha1": string of 40 chars with sha1
+ * "type": one of "commit", "tag", "tree", "blob"
+ * "size": number; the size of the referenced object in bytes (the same as git cat-file -s reports)
+ * *"upstream"*: optional field with upstream link string (if this ref is tracking branch)
+ * *"push"*: optional field with push link string (usually the same as the upstream)
+ * *"HEAD"*: optional field with true (if HEAD linked to this ref)
+ * *"objecttype"*: optional field with one of "commit", "tag", "tree", "blob"; type of tag linked object (if ref is annotated tag)
+ * *"object"*: optional field with sha1-string of tag linked object (if ref is annotated tag)
+ * *"tagger"*: optional field with user object of tagger (if ref is annotated tag)
+ * *"message"*: optional field with message string (if ref is annotated tag)
+
+Fields "commits", "heads", "tags", "remote" and "REFS" are mandatory in history object.
+"stash" is an optional field containing a ref .git/refs/stash, if it exists.
 
 Fields "tags" and "refs" are optional for commit object.
 Field "refs" for commit include all refs to this commits except tags -- branches, remote branches, symbolic refs.
@@ -180,13 +215,11 @@ Commits has reverse chronological order -- from newest to oldest.
 
 Fields "upstream" and "push" are optional for ref object.
 Field "HEAD" is optional for ref (true, if HEAD link to this ref).
-v1.3 is lightweight tag, and v1.2 is annotated tag.
+
 Value of fields "type" and "objecttype" for ref is one of "commit", "tag", "tree", "blob".
-Value of field "size" for ref is the size of the object in bytes (the same as git cat-file -s reports).
+Value of field "size" for ref is number, the size of the object in bytes (the same as git cat-file -s reports).
 
-"REFS" is a hash of symbolic refs (usually just HEAD, but also may be FETCH_HEAD, MERGE_HEAD, CHERRY_PICK_HEAD etc).
-
-"stash" is an optional field containing a ref .git/refs/stash, if it exists.
+"REFS" is a hash of symbolic refs (usually just HEAD, but also may be FETCH_HEAD, MERGE_HEAD, CHERRY_PICK_HEAD etc); key .
 
 All dates in JSON has strict ISO 8601 format.
 
