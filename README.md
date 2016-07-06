@@ -19,7 +19,7 @@ Also you can install package locally or use it programmatically:
 
 ```js
 const fullGitHistory = require('full-git-history'),
-      checkHistory = require('check-history');
+      checkHistory = require('full-git-history/test/check-history');
 
 /**
  * @param {string[]} Args list.
@@ -32,9 +32,9 @@ fullGitHistory(['../foo-project', '-o', '/foo-history.json'], error => {
     return;
   }
 
-  if (checkHistory('/foo-history.json'))
+  if (checkHistory('/foo-history.json')) {
     console.log('No errors in history.');
-  }) else {
+  } else {
     console.log('History has some errors.');
   }
 
@@ -51,7 +51,7 @@ $ node --max-old-space-size=8192 ~/JS/full-git-history/test/check-history.js big
 See [fatal-error-call-and-retry-last-allocation-failed-process-out-of-memory](http://stackoverflow.com/questions/26094420/fatal-error-call-and-retry-last-allocation-failed-process-out-of-memory) for details.
 
 ## History format ##
-Here is an example of the resulting json-history with all mandatory and some optional fields:
+Here is an synthetic (not self-consistent) example of the resulting json-history with all mandatory and some optional fields:
 
 ```json
 {
@@ -190,8 +190,9 @@ All dates in JSON has strict ISO 8601 format.
 See "git help rev-list" and "git help for-each-ref" for a detailed description of all this fields.
 
 ## Tests ##
-To run the test suite, first install the dependencies (only Mocha), then run npm test:
+To run the test suite (47 tests), first install the devDependencies (only Mocha), then run npm test:
 ```bash
+$ npm install
 $ npm test
 ```
 
