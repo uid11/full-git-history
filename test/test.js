@@ -802,6 +802,8 @@ describe('commits', function() {
   it('has correct GPG', function(done) {
     clearFile(FILE);
 
+    const GPGtypes = ['G', 'B', 'U'];
+
     fullGitHistory([GIT, '-o', FILE], error => {
 
       if (error) throw error;
@@ -816,8 +818,7 @@ describe('commits', function() {
 
         assert(GPG instanceof Object);
 
-        assert(typeof GPG.type === 'string');
-        assert(GPG.type.length === 1);
+        assert(GPGtypes.includes(GPG.type));
 
         if (GPG.hasOwnProperty('key')) {
           assert(typeof GPG.key === 'string');

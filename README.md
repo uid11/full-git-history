@@ -189,7 +189,7 @@ v1.3 is lightweight tag, and v1.2 is annotated tag.
  * "message": message string
  * *"GPG"*: optional field with GPG object (only for signed commits)
  * *"encoding"*: optional field with encoding string (only for non-default encoding)
- * *"reflog"*: optional field with reflog object
+ * *"reflog"*: optional field with the reflog object
 
 **ref** fields:
  * "sha1": string of 40 chars with sha1
@@ -203,25 +203,22 @@ v1.3 is lightweight tag, and v1.2 is annotated tag.
  * *"tagger"*: optional field with user object of tagger (if ref is annotated tag)
  * *"message"*: optional field with message string (if ref is annotated tag)
 
-Fields "commits", "heads", "tags", "remote" and "REFS" are mandatory in history object.
-"stash" is an optional field containing a ref .git/refs/stash, if it exists.
+**remote** object: object with all branches in this remote (like history.heads for local branches); key — branch name, value — branch ref object
 
-Fields "tags" and "refs" are optional for commit object.
-Field "refs" for commit include all refs to this commits except tags -- branches, remote branches, symbolic refs.
-Field "GPG" is optinal for commit (only for signed commits).
-Field "encoding" is optional for commit (only for non-default encoding).
-Also there is optional field "reflog" for commits.
-Commits has reverse chronological order -- from newest to oldest.
+**user** fields:
+ * "user": object with string fields "name" and "email"
+ * "date": string with date in strict ISO 8601 format
 
-Fields "upstream" and "push" are optional for ref object.
-Field "HEAD" is optional for ref (true, if HEAD link to this ref).
+**GPG** fields:
+ * "type": one of "G", "B", "U" (Good/Bad/good Untrusted signature)
+ * *"name"*: optional field with non-empty string with the name of the signer (if exists)
+ * *"key"*: optional field with non-empty string with the key used to sign (if exists)
 
-Value of fields "type" and "objecttype" for ref is one of "commit", "tag", "tree", "blob".
-Value of field "size" for ref is number, the size of the object in bytes (the same as git cat-file -s reports).
-
-"REFS" is a hash of symbolic refs (usually just HEAD, but also may be FETCH_HEAD, MERGE_HEAD, CHERRY_PICK_HEAD etc); key .
-
-All dates in JSON has strict ISO 8601 format.
+**reflog** fields:
+ * *"selector"*: optional field with non-empty string with reflog selector, e.g., "refs/stash@{1}" (if exists)
+ * *"name"*: optional field with non-empty string with reflog identity name (if exists)
+ * *"email"*: optional field with non-empty string with reflog identity email (if exists)
+ * *"message"*: optional field with non-empty string with reflog message (if exists)
 
 See "git help rev-list" and "git help for-each-ref" for a detailed description of all this fields.
 
