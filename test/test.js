@@ -21,9 +21,9 @@ const assertUser = user => {
   assert(typeof user.email === 'string');
 
   assert(user.name.length > 0);
-  assert(user.email.indexOf('@') > 0);
-  assert(user.email.indexOf('<') === -1);
-  assert(user.email.indexOf('>') === -1);
+  assert(user.email.includes('@'));
+  assert(!user.email.includes('<'));
+  assert(!user.email.includes('>'));
 
 };
 
@@ -146,7 +146,7 @@ describe('API', function() {
     try {
       fullGitHistory([GIT, '-o', FILE, 'C']);
     } catch(e) {
-      if (e.message.indexOf('extra option') >=0 ) return;
+      if (e.message.includes('extra option')) return;
       return;
     }
 
@@ -159,7 +159,7 @@ describe('API', function() {
     try {
       fullGitHistory(['-o', FILE, GIT, 'C']);
     } catch(e) {
-      if (e.message.indexOf('extra option') >=0 ) return;
+      if (e.message.includes('extra option')) return;
     }
 
     assert(false);
@@ -870,7 +870,7 @@ describe('refs', function() {
           assert(ref.sha1.length === 40);
 
           assert(typeof ref.type === 'string');
-          assert(TYPES.indexOf(ref.type) !== -1);
+          assert(TYPES.includes(ref.type));
 
           assert(typeof ref.size === 'number');
           assert(ref.size > 0);
@@ -1026,7 +1026,7 @@ describe('tags', function() {
 
         if (ref.type !== 'tag') continue;
 
-        assert(TYPES.indexOf(ref.objecttype) !== -1);
+        assert(TYPES.includes(ref.objecttype));
 
         assert(typeof ref.object === 'string');
         assert(ref.object.length === 40);
@@ -1106,7 +1106,7 @@ describe('REFS', function() {
           assert(commit instanceof Object);
           const refs = commit.refs;
           assert(refs instanceof Array);
-          assert(refs.indexOf(name) >= 0);
+          assert(refs.includes(name));
 
           continue;
         }
@@ -1153,7 +1153,7 @@ describe('REFS', function() {
         assert(commit instanceof Object);
         const refs = commit.refs;
         assert(refs instanceof Array);
-        assert(refs.indexOf(name) >= 0);
+        assert(refs.includes(name));
 
       }
 

@@ -23,7 +23,7 @@ const KB = 1024, MB = 1024 * KB,
 const REFS = ['heads', 'tags', 'remotes'],
       FULL_REFS = REFS.map(key => `refs/${key}/`);
 
-const SEPARATOR = Array(32).join('\n');
+const SEPARATOR = '\n'.repeat(32);
 const GIT_PARAMS = {
   refs: [
     `for-each-ref`, `--format=%(objectname) %(refname) %(objecttype)

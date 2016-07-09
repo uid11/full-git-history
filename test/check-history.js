@@ -331,10 +331,7 @@ const checkREF = ({ REF, name }, { commitsHash, heads }) => {
   const refs = commit.refs;
   assert(isArray(refs), `refs is not an array in commit ${REF}`);
 
-  assert(
-    refs.indexOf(name) >= 0,
-    `ref '${name}' do not link to commit ${REF}`
-  );
+  assert(refs.includes(name), `ref '${name}' do not link to commit ${REF}`);
 };
 
 /**
@@ -506,9 +503,9 @@ const checkDate = date => {
  */
 const checkEmail = email => {
   checkStr(email);
-  assert(email.indexOf('@') > 0, `@ not in email (${email})`);
-  assert(email.indexOf('<') === -1, `< in email (${email})`);
-  assert(email.indexOf('>') === -1, `> in email (${email})`);
+  assert(email.includes('@'), `@ not in email (${email})`);
+  assert(!email.includes('<'), `< in email (${email})`);
+  assert(!email.includes('>'), `> in email (${email})`);
 };
 
 /**
@@ -591,7 +588,7 @@ const checkKeys = (obj, ...rest) => {
  * @param  {string} type to check.
  */
 const checkType = type => {
-  assert(TYPES.indexOf(type) !== -1, type);
+  assert(TYPES.includes(type), type);
 };
 
 /**
