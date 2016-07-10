@@ -30,7 +30,7 @@ const assertUser = user => {
 const hasOwn = Object.prototype.hasOwnProperty,
       TIMEOUT = 1024,
       GIT = 'test',
-      TMP = 'tmp/',
+      TMP = `${GIT}/tmp/`,
       FILE = `${TMP}tmp.json`,
       OTHER = `${TMP}other.json`,
       NOT_EXISTS = `NOT_EXISTS_FILE.json`,
@@ -256,7 +256,7 @@ describe('fs', function() {
 
   it('works with absolute paths', function(done) {
 
-    const AFILE = __dirname + '/../tmp/atmp.json';
+    const AFILE = __dirname + '/tmp/atmp.json';
     const AGIT  = __dirname;
 
     clearFile(AFILE);
