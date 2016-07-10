@@ -13,7 +13,7 @@ Let /path/to/foo-project -- path to some git-project (i.e. it contains ".git" di
 $ npm install full-git-history -g
 $ full-git-history /path/to/foo-project -o ~/bar/foo-project-history.json
 ```
-Arguments order is not important, just use -o before output filename. Paths can be absolute or relative.
+Arguments order is not important, just use -o before output filename. Paths can be absolute or relative. Default path is "." (current path), default output filename is "history.json" (in the current directory, respectively).
 
 Get some statistics of the repository and a list of errors (useful only for debugging):
 ```bash
