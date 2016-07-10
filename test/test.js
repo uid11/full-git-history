@@ -129,11 +129,21 @@ describe('API', function() {
 
   });
 
-  it('do not work with unknown args', function() {
+  it('show usage with unknown args', function() {
+
+    let log, called = false;
 
     try {
+      log = console.log;
+      console.log = message => {
+        assert(!called);
+        called = true;
+        assert(message.startsWith('usage'));
+      };
       fullGitHistory([GIT, 'A']);
-    } catch(e) {
+      assert(called);
+    } finally {
+      console.log = log;
       return;
     }
 
@@ -141,12 +151,21 @@ describe('API', function() {
 
   });
 
-  it('do not work with extra args', function() {
+  it('show usage with extra args', function() {
+
+    let log, called = false;
 
     try {
+      log = console.log;
+      console.log = message => {
+        assert(!called);
+        called = true;
+        assert(message.startsWith('usage'));
+      };
       fullGitHistory([GIT, '-o', FILE, 'C']);
-    } catch(e) {
-      if (e.message.includes('extra option')) return;
+      assert(called);
+    } finally {
+      console.log = log;
       return;
     }
 
@@ -154,12 +173,22 @@ describe('API', function() {
 
   });
 
-  it('do not work with extra args in custom order', function() {
+  it('show usage with extra args in custom order', function() {
+
+    let log, called = false;
 
     try {
+      log = console.log;
+      console.log = message => {
+        assert(!called);
+        called = true;
+        assert(message.startsWith('usage'));
+      };
       fullGitHistory(['-o', FILE, GIT, 'C']);
-    } catch(e) {
-      if (e.message.includes('extra option')) return;
+      assert(called);
+    } finally {
+      console.log = log;
+      return;
     }
 
     assert(false);

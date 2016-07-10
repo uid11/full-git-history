@@ -67,7 +67,8 @@ const parseArgs = args => {
       continue;
     }
 
-    throw Error(`extra option: ${arg}`);
+    options.usage = true;
+    break;
   }
   return options;
 };
@@ -81,6 +82,12 @@ const fullGitHistory = (args, callback = defaultCallback) => {
 
   const options = parseArgs(args);
   let closed = false;
+
+  if (options.usage) {
+    console.log(`usage: full-git-history [<path>] [-o <path>]
+       full-git-history path/to/foo -o path/to/foo-history.json`);
+    return;
+  }
 
   /**
    * General handler for all errors.
