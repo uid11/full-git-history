@@ -2,6 +2,7 @@
 describe('full-git-history', function() {
 
 const fs = require('fs'),
+      execFile = require('child_process').execFile,
       fullGitHistory = require('../src/full-git-history'),
       checkHistory   = require('./check-history');
 
@@ -1307,6 +1308,43 @@ describe('REFS', function() {
 
 });
 
+
+describe('bash commands', function() {
+
+  it('full-git-history exists', function(done) {
+
+    execFile('src/full-git-history.js', [GIT], done);
+
+  });
+
+  it('check-history exists', function(done) {
+
+    execFile('test/check-history.js', [DEFAULT], done);
+
+  });
+
+  it('full-git-history have no errors', function(done) {
+
+    execFile('src/full-git-history.js', [GIT, '-o', FILE], done)
+      .stderr.on('data', () => assert(false));
+
+  });
+
+  it('check-history have no errors', function(done) {
+
+    let hasOut = false;
+    const exec = execFile('test/check-history.js', [FILE], error => {
+      assert(!error);
+      assert(hasOut);
+      done();
+    });
+
+    exec.stderr.on('data', data => assert(false, data));
+    exec.stdout.on('data', () => hasOut = true);
+
+  });
+
+});
 
 describe('check-history', function() {
 
