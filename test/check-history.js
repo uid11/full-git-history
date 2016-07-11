@@ -10,6 +10,13 @@ const fs = require('fs');
  * @return {boolean} true, if history is correct.
  */
 const checkHistory = module.exports = FILE => {
+
+  if (!FILE) {
+    console.log(`usage: check-history <path>
+       check-history path/to/foo-history.json`);
+    return;
+  }
+
   log(`Check git history in ${FILE}`);
 
   /**

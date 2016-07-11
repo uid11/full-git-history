@@ -36,6 +36,7 @@ const hasOwn = Object.prototype.hasOwnProperty,
       NOT_EXISTS = `NOT_EXISTS_FILE.json`,
       EMPTY = `${TMP}empty.json`,
       INCORRECT = `${TMP}incorrect.json`,
+      DEFAULT = 'history.json',
       REPO_ORIG = `${GIT}/git`,
       REPO = `${GIT}/.git`;
 
@@ -126,6 +127,28 @@ describe('API', function() {
     fullGitHistory(['test']);
 
     setTimeout(done, TIMEOUT);
+
+  });
+
+  it('works without args', function(done) {
+
+    this.timeout(TIMEOUT + 1024);
+
+    fullGitHistory([]);
+
+    setTimeout(done, TIMEOUT);
+
+  });
+
+  it('throw without args array', function() {
+
+    try {
+      fullGitHistory();
+    } catch(e) {
+      return;
+    }
+
+    assert(false);
 
   });
 
@@ -256,6 +279,57 @@ describe('fs', function() {
       if (error) throw error;
 
       assert(readJSON(FILE) instanceof Object);
+
+      done();
+
+    });
+  });
+
+  it('create file for default path', function(done) {
+
+    clearFile(DEFAULT);
+
+    assert(readJSON(DEFAULT) === null, 'check empty file');
+
+    fullGitHistory([], function(error) {
+
+      if (error) throw error;
+
+      assert(readJSON(DEFAULT) instanceof Object);
+
+      done();
+
+    });
+  });
+
+  it('create file with given name for default path', function(done) {
+
+    clearFile(DEFAULT);
+
+    assert(readJSON(DEFAULT) === null, 'check empty file');
+
+    fullGitHistory(['-o', DEFAULT], function(error) {
+
+      if (error) throw error;
+
+      assert(readJSON(DEFAULT) instanceof Object);
+
+      done();
+
+    });
+  });
+
+  it('create file with default filename', function(done) {
+
+    clearFile(DEFAULT);
+
+    assert(readJSON(DEFAULT) === null, 'check empty file');
+
+    fullGitHistory([GIT], function(error) {
+
+      if (error) throw error;
+
+      assert(readJSON(DEFAULT) instanceof Object);
 
       done();
 
@@ -1268,6 +1342,28 @@ describe('check-history', function() {
     }
 
     assert(false);
+  });
+
+  it('show usage without args', function() {
+
+    let log, called = false;
+
+    try {
+      log = console.log;
+      console.log = message => {
+        assert(!called);
+        called = true;
+        assert(message.startsWith('usage'));
+      };
+      checkHistory();
+      assert(called);
+    } finally {
+      console.log = log;
+      return;
+    }
+
+    assert(false);
+
   });
 
   it('return false for incorrect history', function() {
