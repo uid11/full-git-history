@@ -8,7 +8,7 @@
 
 ## Usage ##
 You need a node version >=6.0.0. Of course, you must have installed Git.
-Let /path/to/foo-project -- path to some git-project (i.e. it contains ".git" directory).
+Let /path/to/foo-project be the path to some git-project (i.e. it contains ".git" directory).
 ```bash
 $ npm install full-git-history -g
 $ full-git-history /path/to/foo-project -o ~/bar/foo-project-history.json
@@ -46,7 +46,7 @@ fullGitHistory(['../foo-project', '-o', '/foo-history.json'], error => {
 ```
 Function checkHistory('/foo-history.json') check history in file (synchronously) and print some general information about the repository and history errors.
 
-**full-git-history** work fine with world biggest git-repositories (like [Chromium](https://chromium.googlesource.com/chromium/src/), [Gecko](https://github.com/mozilla/gecko-dev), [parts of linux kernel](https://git.kernel.org/cgit/linux/kernel/git/clk/linux.git/) -- each repository include about 500 000 commits), but in this case the output file will be automatically separated into several parts (all parts are valid json-files, which should be mixed) due to a max string size limit in the V8 ([https://github.com/nodejs/node/issues/3175](https://github.com/nodejs/node/issues/3175)).
+**full-git-history** work fine with world biggest git-repositories (like [Chromium](https://chromium.googlesource.com/chromium/src/), [Gecko](https://github.com/mozilla/gecko-dev), [parts of linux kernel](https://git.kernel.org/cgit/linux/kernel/git/clk/linux.git/) — each repository include about 500 000 commits), but in this case the output file will be automatically separated into several parts (all parts are valid json-files, which should be mixed) due to a max string size limit in the V8 ([https://github.com/nodejs/node/issues/3175](https://github.com/nodejs/node/issues/3175)).
 Also for checking such a large object, you should use the increase memory limit for the node (only for checking, not for getting history):
 
 ```bash
