@@ -39,7 +39,9 @@ const hasOwn = Object.prototype.hasOwnProperty,
       INCORRECT = `${TMP}incorrect.json`,
       DEFAULT = 'history.json',
       REPO_ORIG = `${GIT}/git`,
-      REPO = `${GIT}/.git`;
+      REPO = `${GIT}/.git`,
+      CHECK = `${GIT}/check-history.js`,
+      FULL = `src/full-git-history.js`;
 
 const TYPES = ['commit', 'tag', 'tree', 'blob'];
 
@@ -1313,27 +1315,31 @@ describe('bash commands', function() {
 
   it('full-git-history exists', function(done) {
 
-    execFile('src/full-git-history.js', [GIT], done);
+    execFile(FULL, [GIT], done);
 
   });
 
   it('check-history exists', function(done) {
 
-    execFile('test/check-history.js', [DEFAULT], done);
+    execFile(CHECK, [DEFAULT], done);
 
   });
 
   it('full-git-history have no errors', function(done) {
 
-    execFile('src/full-git-history.js', [GIT, '-o', FILE], done)
-      .stderr.on('data', () => assert(false));
+    clearFile(FILE);
+    execFile(FULL, [GIT, '-o', FILE], error => {
+      assert(!error);
+      assert(readJSON(FILE) instanceof Object);
+      done();
+    }).stderr.on('data', () => assert(false));
 
   });
 
   it('check-history have no errors', function(done) {
 
     let hasOut = false;
-    const exec = execFile('test/check-history.js', [FILE], error => {
+    const exec = execFile(CHECK, [FILE], error => {
       assert(!error);
       assert(hasOut);
       done();
@@ -1341,6 +1347,64 @@ describe('bash commands', function() {
 
     exec.stderr.on('data', data => assert(false, data));
     exec.stdout.on('data', () => hasOut = true);
+
+  });
+
+  it('full-git-history have usage', function(done) {
+
+    let hasOut = false;
+    const exec = execFile(FULL,
+      [GIT, '-o', FILE, 'A'], error => {
+        assert(!error);
+        assert(hasOut);
+        done();
+      });
+
+    exec.stderr.on('data', data => assert(false, data));
+    exec.stdout.on('data', data => {
+      assert(data.startsWith('usage'));
+      assert(!hasOut);
+      hasOut = true;
+    });
+
+  });
+
+  it('check-history have usage', function(done) {
+
+    let hasOut = false;
+    const exec = execFile(CHECK, [],
+      error => {
+        assert(!error);
+        assert(hasOut);
+        done();
+      });
+
+    exec.stderr.on('data', data => assert(false, data));
+    exec.stdout.on('data', data => {
+      assert(data.startsWith('usage'));
+      assert(!hasOut);
+      hasOut = true;
+    });
+
+  });
+
+  it('full-git-history have errors', function(done) {
+
+    const exec = execFile(FULL,
+      [NOT_EXISTS], error => {
+        assert(error instanceof Error);
+        done();
+      });
+
+  });
+
+  it('check-history have errors', function(done) {
+
+    const exec = execFile(CHECK,
+      [NOT_EXISTS], error => {
+        assert(error instanceof Error);
+        done();
+      });
 
   });
 
