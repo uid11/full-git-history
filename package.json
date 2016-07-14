@@ -16,7 +16,16 @@
     "history",
     "json",
     "full history",
-    "gitk"
+    "gitk",
+    "log",
+    "shortlog",
+    "git log",
+    "git show",
+    "git shortlog",
+    "rev-list",
+    "for-each-ref",
+    "git rev-list",
+    "git for-each-ref"
   ],
   "dependencies": {},
   "devDependencies": {
