@@ -15,7 +15,7 @@ const KB = 1024, MB = 1024 * KB,
         maxBuffer: 4096 * MB,
         encoding: 'buffer'
       },
-      MAX_OUT_SIZE = 128 * MB,
+      MAX_OUT_SIZE = 160 * MB,
       MAX_REF_SIZE = 1 * KB,
       MAX_OUT_REFS = Math.round(MAX_OUT_SIZE / MAX_REF_SIZE),
       TOLERANCE_SIZE = 8 * MB;
