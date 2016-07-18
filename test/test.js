@@ -33,6 +33,7 @@ const hasOwn = Object.prototype.hasOwnProperty,
       GIT = 'test',
       TMP = `${GIT}/tmp/`,
       FILE = `${TMP}tmp.json`,
+      AFILE = `${__dirname}/tmp/atmp.json`,
       OTHER = `${TMP}other.json`,
       NOT_EXISTS = `NOT_EXISTS_FILE.json`,
       EMPTY = `${TMP}empty.json`,
@@ -305,7 +306,6 @@ describe('fs', function() {
 
   it('works with absolute paths', function(done) {
 
-    const AFILE = __dirname + '/tmp/atmp.json';
     const AGIT  = __dirname;
 
     clearFile(AFILE);
@@ -1424,6 +1424,34 @@ describe('check-history', function() {
          * Reverse the renaming.
          */
         fs.renameSync(REPO, REPO_ORIG);
+      } catch(e) {}
+
+      try {
+        /**
+         * Remove tmp file.
+         */
+        fs.unlink(FILE);
+      } catch(e) {}
+
+      try {
+        /**
+         * Remove tmp file.
+         */
+        fs.unlink(AFILE);
+      } catch(e) {}
+
+      try {
+        /**
+         * Remove tmp file.
+         */
+        fs.unlink(OTHER);
+      } catch(e) {}
+
+      try {
+        /**
+         * Remove tmp file.
+         */
+        fs.unlink(DEFAULT);
       } catch(e) {}
 
     }
