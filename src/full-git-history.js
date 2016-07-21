@@ -50,6 +50,11 @@ const parseArgs = args => {
   const options = { out: 'history.json', path: '.' };
   for (const arg of args) {
 
+    if (arg === '-no') {
+      options.no = true;
+      continue;
+    }
+
     if (options.afterO) {
       options.out = arg;
       options.afterO = false;
@@ -128,9 +133,10 @@ const fullGitHistory = (args, callback = defaultCallback) => {
     const data = JSON.stringify(commitsBuffer).slice(1, -1);
     outSize += data.length;
 
-    if (outSize > MAX_OUT_SIZE) openNextFile(data.length);
-
-    canWrite = output.write(separator + data);
+    if (output) {
+      if (outSize > MAX_OUT_SIZE) openNextFile(data.length);
+      canWrite = output.write(separator + data);
+    }
 
     separator = ',';
     commitsBuffer.length = 0;
@@ -431,7 +437,7 @@ const fullGitHistory = (args, callback = defaultCallback) => {
     canWrite = output.write('{"commits":[');
   };
 
-  openNextFile(0);
+  if (!options.no) openNextFile(0);
 
   /**
    * Get Promise callback.
@@ -454,6 +460,7 @@ const fullGitHistory = (args, callback = defaultCallback) => {
    * @return {Promise} Write promise.
    */
   const writeJSON = json => {
+    if (options.no) return Promise.resolve();
     const file = createFile(getNextFileName());
 
     return new Promise((resolve, reject) => {
@@ -503,15 +510,18 @@ const fullGitHistory = (args, callback = defaultCallback) => {
     mixREFS();
     const proms = writeSeparateRefs();
 
-    proms.push(new Promise((resolve, reject) => {
-      output
-        .removeListener('drain', write)
-        .removeListener('error', errorHandler)
-        .end(
-          '],' + JSON.stringify(refs).slice(1), 'utf8',
-          promiseCallback(resolve, reject)
-        );
-    }));
+    proms.push(output ?
+      new Promise((resolve, reject) => {
+        output
+          .removeListener('drain', write)
+          .removeListener('error', errorHandler)
+          .end(
+            '],' + JSON.stringify(refs).slice(1), 'utf8',
+            promiseCallback(resolve, reject)
+          );
+      }) :
+      Promise.resolve()
+    );
 
     Promise.all(proms).then(
       () => callback(),

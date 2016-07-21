@@ -52,6 +52,12 @@ const clearFile = name =>
 const readJSON = name =>
   JSON.parse(fs.readFileSync(name, 'utf8') || 'null');
 
+const isEmptyFile = name => {
+  try {
+    return fs.readFileSync(name, 'utf8').length === 0;
+  } catch (e) { return false; }
+};
+
 describe('API', function() {
 
   it('exists', function() {
@@ -170,6 +176,46 @@ describe('API', function() {
     this.timeout(TIMEOUT + 1024);
 
     fullGitHistory([GIT, '-o', FILE]);
+
+    setTimeout(done, TIMEOUT);
+
+  });
+
+  it('works with -no key', function(done) {
+
+    this.timeout(TIMEOUT + 1024);
+
+    fullGitHistory([GIT, '-no']);
+
+    setTimeout(done, TIMEOUT);
+
+  });
+
+  it('works with -no as key', function(done) {
+
+    this.timeout(TIMEOUT + 1024);
+
+    fullGitHistory([GIT, '-no', '-o', FILE]);
+
+    setTimeout(done, TIMEOUT);
+
+  });
+
+  it('works with -no as key in front of path', function(done) {
+
+    this.timeout(TIMEOUT + 1024);
+
+    fullGitHistory(['-no', GIT, '-o', FILE]);
+
+    setTimeout(done, TIMEOUT);
+
+  });
+
+  it('works with -no as key with different order of args', function(done) {
+
+    this.timeout(TIMEOUT + 1024);
+
+    fullGitHistory([GIT, '-o', FILE, '-no']);
 
     setTimeout(done, TIMEOUT);
 
@@ -346,6 +392,42 @@ describe('fs', function() {
 
     fullGitHistory([GIT, '-o', FILE ], callback);
     fullGitHistory([GIT, '-o', OTHER], callback);
+  });
+
+  it('do not write with option -no', function(done) {
+
+    clearFile(FILE);
+    let calls = 0;
+
+    const callback = error => {
+
+      if (error) throw error;
+      if (++calls !== 1) return;
+
+      assert(isEmptyFile(FILE));
+
+      done();
+    };
+
+    fullGitHistory([GIT, '-o', FILE, '-no'], callback);
+  });
+
+  it('do not write with option -no in custom order', function(done) {
+
+    clearFile(FILE);
+    let calls = 0;
+
+    const callback = error => {
+
+      if (error) throw error;
+      if (++calls !== 1) return;
+
+      assert(isEmptyFile(FILE));
+
+      done();
+    };
+
+    fullGitHistory([GIT, '-no', '-o', FILE], callback);
   });
 
 });
@@ -1265,6 +1347,17 @@ describe('bash commands', function() {
   it('check-history exists', function(done) {
 
     execFile(CHECK, [DEFAULT], done);
+
+  });
+
+  it('full-git-history works with option -no', function(done) {
+
+    clearFile(FILE);
+    execFile(FULL, [GIT, '-o', FILE, '-no'], error => {
+      assert(!error);
+      assert(isEmptyFile(FILE));
+      done();
+    }).stderr.on('data', () => assert(false));
 
   });
 
