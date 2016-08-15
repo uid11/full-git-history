@@ -6,7 +6,7 @@ const fs = require('fs');
 
 /**
  * Check history JSON for correct.
- * @param  {string} FILE Name of file to check.
+ * @param  {string|object} FILE Name of file to check (or history object).
  * @return {boolean} true, if history is correct.
  */
 const checkHistory = module.exports = FILE => {
@@ -17,7 +17,7 @@ const checkHistory = module.exports = FILE => {
     return;
   }
 
-  log(`Check git history in ${FILE}`);
+  log(`Check git history${typeof FILE === 'string' ? ' in ' + FILE : ''}`);
 
   /**
    * Read history.
@@ -643,10 +643,12 @@ const humanTime = time => `${(time/1000).toFixed(3)} sec`;
 
 /**
  * Read git history from one or several files.
- * @param  {string} name Name of file with history.
+ * @param  {string|object} name Name of file with history (or history object).
  * @return {?Object} History object or null.
  */
 const readHistory = name => {
+  if (typeof name !== 'string') return name;
+
   let outCount = 0, history = null;
   const outParts = name.split('.'),
         outExt  = outParts.length > 1 ? '.' + outParts.pop() : '',

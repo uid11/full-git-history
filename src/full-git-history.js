@@ -44,7 +44,7 @@ const SOURCES = Object.keys(GIT_PARAMS),
 /**
  * Parse string arguments from command line.
  * @param  {string[]} args
- * @return {{out: string, path: string}} Output filename, path to repository.
+ * @return {Object} Options object with output filename, path to repository.
  */
 const parseArgs = args => {
   const options = { out: 'history.json', path: '.' };
@@ -52,6 +52,11 @@ const parseArgs = args => {
 
     if (arg === '-no') {
       options.no = true;
+      continue;
+    }
+
+    if (arg === '-r') {
+      options.r = true;
       continue;
     }
 
@@ -130,14 +135,18 @@ const fullGitHistory = (args, callback = defaultCallback) => {
       return;
     }
 
-    const data = JSON.stringify(commitsBuffer).slice(1, -1);
-    outSize += data.length;
-
     if (output) {
+      const data = JSON.stringify(commitsBuffer).slice(1, -1);
+      outSize += data.length;
+
       if (outSize > MAX_OUT_SIZE) openNextFile(data.length);
       canWrite = output.write(separator + data);
     }
 
+    if (options.r) {
+      for (let i = 0, l = commitsBuffer.length; i < l; ++i)
+        refs.commits[refs.commits.length] = commitsBuffer[i];
+    }
     separator = ',';
     commitsBuffer.length = 0;
   };
@@ -145,6 +154,8 @@ const fullGitHistory = (args, callback = defaultCallback) => {
   const refs = {},
         OUTPUT_REFS = refs.REFS = {},
         MAYBE_REFS = {};
+
+  if (options.r) refs.commits = [];
   for (const ref of REFS) refs[ref] = {};
 
   const snip = {}, parse = {};
@@ -524,7 +535,8 @@ const fullGitHistory = (args, callback = defaultCallback) => {
     );
 
     Promise.all(proms).then(
-      () => callback(),
+      options.r ?
+        () => callback(null, refs) : () => callback(),
       error => callback(error)
     );
   };

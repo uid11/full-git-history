@@ -11,6 +11,8 @@ const assert = (value, msg) => {
   if (value !== true) throw Error('Assert ' + (msg || ''));
 };
 
+const isArray = Array.isArray;
+
 const assertUser = user => {
 
   assert(typeof user.date === 'string');
@@ -149,6 +151,72 @@ describe('API', function() {
 
   });
 
+  it('show usage with extra args with -no', function() {
+
+    let log, called = false;
+
+    try {
+      log = console.log;
+      console.log = message => {
+        assert(!called);
+        called = true;
+        assert(message.startsWith('usage'));
+      };
+      fullGitHistory([GIT, '-no', '-o', FILE, 'C']);
+      assert(called);
+    } finally {
+      console.log = log;
+      return;
+    }
+
+    assert(false);
+
+  });
+
+  it('show usage with extra args with -r', function() {
+
+    let log, called = false;
+
+    try {
+      log = console.log;
+      console.log = message => {
+        assert(!called);
+        called = true;
+        assert(message.startsWith('usage'));
+      };
+      fullGitHistory([GIT, '-o', FILE, 'C', '-r']);
+      assert(called);
+    } finally {
+      console.log = log;
+      return;
+    }
+
+    assert(false);
+
+  });
+
+  it('show usage with extra args with -r and -no', function() {
+
+    let log, called = false;
+
+    try {
+      log = console.log;
+      console.log = message => {
+        assert(!called);
+        called = true;
+        assert(message.startsWith('usage'));
+      };
+      fullGitHistory(['-no', GIT, '-o', FILE, '-r', 'C']);
+      assert(called);
+    } finally {
+      console.log = log;
+      return;
+    }
+
+    assert(false);
+
+  });
+
   it('show usage with extra args in custom order', function() {
 
     let log, called = false;
@@ -191,11 +259,31 @@ describe('API', function() {
 
   });
 
+  it('works with -r key', function(done) {
+
+    this.timeout(TIMEOUT + 1024);
+
+    fullGitHistory([GIT, '-r']);
+
+    setTimeout(done, TIMEOUT);
+
+  });
+
   it('works with -no as key', function(done) {
 
     this.timeout(TIMEOUT + 1024);
 
     fullGitHistory([GIT, '-no', '-o', FILE]);
+
+    setTimeout(done, TIMEOUT);
+
+  });
+
+  it('works with -r as key', function(done) {
+
+    this.timeout(TIMEOUT + 1024);
+
+    fullGitHistory([GIT, '-r', '-o', FILE]);
 
     setTimeout(done, TIMEOUT);
 
@@ -216,6 +304,26 @@ describe('API', function() {
     this.timeout(TIMEOUT + 1024);
 
     fullGitHistory([GIT, '-o', FILE, '-no']);
+
+    setTimeout(done, TIMEOUT);
+
+  });
+
+  it('works with -r as key in front of path', function(done) {
+
+    this.timeout(TIMEOUT + 1024);
+
+    fullGitHistory(['-r', GIT, '-o', FILE]);
+
+    setTimeout(done, TIMEOUT);
+
+  });
+
+  it('works with -r as key with different order of args', function(done) {
+
+    this.timeout(TIMEOUT + 1024);
+
+    fullGitHistory([GIT, '-o', FILE, '-r']);
 
     setTimeout(done, TIMEOUT);
 
@@ -265,7 +373,7 @@ describe('fs', function() {
 
     clearFile(FILE);
 
-    assert(readJSON(FILE) === null, 'check empty file');
+    assert(isEmptyFile(FILE));
 
     fullGitHistory([GIT, '-o', FILE], function(error) {
 
@@ -282,7 +390,7 @@ describe('fs', function() {
 
     clearFile(DEFAULT);
 
-    assert(readJSON(DEFAULT) === null, 'check empty file');
+    assert(isEmptyFile(DEFAULT));
 
     fullGitHistory([], function(error) {
 
@@ -299,7 +407,7 @@ describe('fs', function() {
 
     clearFile(DEFAULT);
 
-    assert(readJSON(DEFAULT) === null, 'check empty file');
+    assert(isEmptyFile(DEFAULT));
 
     fullGitHistory(['-o', DEFAULT], function(error) {
 
@@ -316,7 +424,7 @@ describe('fs', function() {
 
     clearFile(DEFAULT);
 
-    assert(readJSON(DEFAULT) === null, 'check empty file');
+    assert(isEmptyFile(DEFAULT));
 
     fullGitHistory([GIT], function(error) {
 
@@ -362,7 +470,7 @@ describe('fs', function() {
 
       const history = readJSON(AFILE);
 
-      assert(Array.isArray(history.commits));
+      assert(isArray(history.commits));
 
       assert(history.heads   instanceof Object);
       assert(history.tags    instanceof Object);
@@ -430,6 +538,98 @@ describe('fs', function() {
     fullGitHistory([GIT, '-no', '-o', FILE], callback);
   });
 
+  it('do not write to default file with option -no', function(done) {
+
+    clearFile(DEFAULT);
+    let calls = 0;
+
+    const callback = error => {
+
+      if (error) throw error;
+      if (++calls !== 1) return;
+
+      assert(isEmptyFile(DEFAULT));
+
+      done();
+    };
+
+    fullGitHistory([GIT, '-no'], callback);
+  });
+
+  it('return history with option -r', function(done) {
+
+    clearFile(FILE);
+    let calls = 0;
+
+    const callback = (error, history) => {
+
+      if (error) throw error;
+      if (++calls !== 1) return;
+
+      assert(isArray(history.commits));
+
+      done();
+    };
+
+    fullGitHistory([GIT, '-o', FILE, '-r'], callback);
+  });
+
+  it('return history with option -r in custom order', function(done) {
+
+    clearFile(FILE);
+    let calls = 0;
+
+    const callback = (error, history) => {
+
+      if (error) throw error;
+      if (++calls !== 1) return;
+
+      assert(isArray(history.commits));
+
+      done();
+    };
+
+    fullGitHistory(['-r', GIT, '-o', FILE], callback);
+  });
+
+  it('return history with options -r and -no', function(done) {
+
+    clearFile(FILE);
+    let calls = 0;
+
+    const callback = (error, history) => {
+
+      if (error) throw error;
+      if (++calls !== 1) return;
+
+      assert(isEmptyFile(FILE));
+      assert(isArray(history.commits));
+
+      done();
+    };
+
+    fullGitHistory([GIT, '-r', '-no', '-o', FILE], callback);
+  });
+
+  it('return history with options -r and -no in custom order', function(done) {
+
+    clearFile(FILE);
+    let calls = 0;
+
+    const callback = (error, history) => {
+
+      if (error) throw error;
+      if (++calls !== 1) return;
+
+      assert(isEmptyFile(FILE));
+      assert(isArray(history.commits));
+
+      done();
+    };
+
+    fullGitHistory(['-no', '-o', FILE, '-r', GIT], callback);
+  });
+
 });
 
 describe('JSON', function() {
@@ -443,7 +643,7 @@ describe('JSON', function() {
       if (error) throw error;
 
       for (let commit of readJSON(FILE).commits)
-        assert(Array.isArray(commit.parents));
+        assert(isArray(commit.parents));
 
       done();
     });
@@ -686,7 +886,7 @@ describe('commits', function() {
 
         const tags = commit.tags;
 
-        assert(Array.isArray(tags));
+        assert(isArray(tags));
 
         for (const tag of tags) {
           assert(typeof tag === 'string');
@@ -713,7 +913,7 @@ describe('commits', function() {
 
         const refs = commit.refs;
 
-        assert(Array.isArray(refs));
+        assert(isArray(refs));
 
         for (const branch of refs) {
           assert(typeof branch === 'string');
@@ -1354,6 +1554,28 @@ describe('bash commands', function() {
 
     clearFile(FILE);
     execFile(FULL, [GIT, '-o', FILE, '-no'], error => {
+      assert(!error);
+      assert(isEmptyFile(FILE));
+      done();
+    }).stderr.on('data', () => assert(false));
+
+  });
+
+  it('full-git-history works with options -no and -r', function(done) {
+
+    clearFile(FILE);
+    execFile(FULL, [GIT, '-r', '-o', FILE, '-no'], error => {
+      assert(!error);
+      assert(isEmptyFile(FILE));
+      done();
+    }).stderr.on('data', () => assert(false));
+
+  });
+
+  it('full-git-history works with option -no in custom order', function(done) {
+
+    clearFile(FILE);
+    execFile(FULL, ['-no', '-o', FILE, GIT], error => {
       assert(!error);
       assert(isEmptyFile(FILE));
       done();
