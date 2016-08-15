@@ -35,6 +35,7 @@ const hasOwn = Object.prototype.hasOwnProperty,
       GIT = 'test',
       TMP = `${GIT}/tmp/`,
       FILE = `${TMP}tmp.json`,
+      WITHERRORS = `${TMP}witherrors.json`,
       AFILE = `${__dirname}/tmp/atmp.json`,
       OTHER = `${TMP}other.json`,
       NOT_EXISTS = `NOT_EXISTS_FILE.json`,
@@ -1682,6 +1683,14 @@ describe('check-history', function() {
 
   });
 
+  it('return true for correct history object', function() {
+
+    const history = readJSON(FILE);
+
+    assert(checkHistory(history));
+
+  });
+
   it('throw for not exists file', function() {
 
     try {
@@ -1693,7 +1702,7 @@ describe('check-history', function() {
     assert(false);
   });
 
-  it('throw for empty history', function() {
+  it('throw for empty history file', function() {
 
     try {
       checkHistory(EMPTY);
@@ -1702,6 +1711,20 @@ describe('check-history', function() {
     }
 
     assert(false);
+  });
+
+  it('return false for history with errors', function() {
+
+    assert(checkHistory(WITHERRORS) === false);
+
+  });
+
+  it('return false for history object with errors', function() {
+
+    const history = readJSON(WITHERRORS);
+
+    assert(checkHistory(history) === false);
+
   });
 
   it('show usage without args', function() {
@@ -1726,7 +1749,29 @@ describe('check-history', function() {
 
   });
 
-  it('return false for incorrect history', function() {
+  it('show usage for falsy history object', function() {
+
+    let log, called = false;
+
+    try {
+      log = console.log;
+      console.log = message => {
+        assert(!called);
+        called = true;
+        assert(message.startsWith('usage'));
+      };
+      checkHistory(null);
+      assert(called);
+    } finally {
+      console.log = log;
+      return;
+    }
+
+    assert(false);
+
+  });
+
+  it('throw for incorrect history', function() {
 
     try {
       checkHistory(INCORRECT);

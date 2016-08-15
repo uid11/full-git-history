@@ -223,7 +223,7 @@ v1.3 is lightweight tag, and v1.2 is annotated tag.
 See "git help rev-list" and "git help for-each-ref" for a detailed description of all this fields.
 
 ## Tests ##
-To run the test suite (82 tests), first install the devDependencies (only Mocha), then run npm test:
+To run the test suite (86 tests), first install the devDependencies (only Mocha), then run npm test:
 ```bash
 $ npm install
 $ npm test

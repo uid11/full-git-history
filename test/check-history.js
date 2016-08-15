@@ -22,7 +22,7 @@ const checkHistory = module.exports = FILE => {
   /**
    * Read history.
    */
-  const history = readHistory(FILE),
+  const history = typeof FILE === 'string' ? readHistory(FILE) : FILE,
         time = Date.now();
 
   /**
@@ -79,8 +79,10 @@ const checkHistory = module.exports = FILE => {
    */
   len = commits.length;
   log(`${len} commit${plural(len)}`);
-  log(`(first: ${commits[len - 1].author.date}`);
-  log(` last : ${commits[0].committer.date})`);
+  if (len) {
+    log(`(first: ${commits[len - 1].author.date}`);
+    log(` last : ${commits[0].committer.date})`);
+  }
 
   /**
    * Log GPG commits.
@@ -418,7 +420,7 @@ const assert = (value, msg) => {
  * @param  {string} type for comparing.
  */
 const assertType = (value, type) => {
-  assert(typeof value === type, `type ${value}:${type}`);
+  assert(typeof value === type, `type of ${value} is not a ${type}`);
 };
 
 /**

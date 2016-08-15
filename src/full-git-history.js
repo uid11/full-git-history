@@ -86,7 +86,7 @@ const parseArgs = args => {
 /**
  * Get full history from git repository and write to json-file.
  * @param {string[]} args like ['~/foo-project', '-o', 'history.json']
- * @param {function(Error=)} callback for when the writting is finished.
+ * @param {function(Error=,Object=)} cb for when the writting is finished.
  */
 const fullGitHistory = (args, callback = defaultCallback) => {
 
@@ -94,7 +94,7 @@ const fullGitHistory = (args, callback = defaultCallback) => {
   let closed = false;
 
   if (options.usage) {
-    console.log(`usage: full-git-history [<path>] [-o <path>]
+    console.log(`usage: full-git-history [<path>] [-o <path>] [-no] [-r]
        full-git-history path/to/foo -o path/to/foo-history.json`);
     return;
   }
