@@ -38,7 +38,7 @@ const fullGitHistory = require('full-git-history'),
 
 /**
  * @param {string[]} Args list.
- * @param {function(Error=,Object=)} Callback for when the writting is finished.
+ * @param {function(Error=,Object=)} Callback (when writting is finished)
  */
 fullGitHistory(['../foo-project', '-o', '/foo-history.json'], error => {
 
@@ -63,7 +63,7 @@ const fullGitHistory = require('full-git-history');
 
 /**
  * @param {string[]} Args list.
- * @param {function(Error=,Object=)} Callback for when the writting is finished.
+ * @param {function(Error=,Object=)} Callback (when writting is finished)
  */
 fullGitHistory(['~/foo-project', '-no', '-r'], (error, history) => {
 
