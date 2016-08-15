@@ -6,7 +6,7 @@ const fs = require('fs');
 
 /**
  * Check history JSON for correct.
- * @param  {string|object} FILE Name of file to check (or history object).
+ * @param  {string|Object} FILE Name of file to check (or history object).
  * @return {boolean} true, if history is correct.
  */
 const checkHistory = module.exports = FILE => {

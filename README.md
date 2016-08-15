@@ -15,6 +15,17 @@ $ full-git-history /path/to/foo-project -o ~/bar/foo-project-history.json
 ```
 Arguments order is not important, just use -o before output filename. Paths can be absolute or relative. Default path is "." (current path), default output filename is "history.json" (in the current directory, respectively).
 
+Use option "-no" (at any position) to suppress writing to the file (regardless of the presence option "-o"). For example, all the following commands will extract the history from repository, but will not write it in any file:
+```bash
+$ full-git-history /path/to/foo-project -no -o ~/bar/foo-project-history.json
+$ full-git-history -no /path/to/foo-project -o ~/bar/foo-project-history.json
+$ full-git-history /path/to/foo-project -o ~/bar/foo-project-history.json -no
+$ full-git-history /path/to/foo-project -no
+```
+
+Use option "-r" at any position to send history object to the callback function (regardless of writing history file). See the example below.
+Options "-o", "-no", and "-r" operate independently of each other.
+
 Get some statistics of the repository and a list of errors (useful only for debugging):
 ```bash
 $ check-history ~/bar/foo-project-history.json
@@ -27,7 +38,7 @@ const fullGitHistory = require('full-git-history'),
 
 /**
  * @param {string[]} Args list.
- * @param {function(Error=)} Callback for when the writting is finished.
+ * @param {function(Error=,Object=)} Callback for when the writting is finished.
  */
 fullGitHistory(['../foo-project', '-o', '/foo-history.json'], error => {
 
@@ -44,7 +55,27 @@ fullGitHistory(['../foo-project', '-o', '/foo-history.json'], error => {
 
 });
 ```
-Function checkHistory('/foo-history.json') check history in file (synchronously) and print some general information about the repository and history errors.
+Function checkHistory('/foo-history.json') check history in file (synchronously) and print some general information about the repository and history errors. You can also call this function directly with the history object: checkHistory({commits: [...], ...}).
+
+Example of history processing without recording any file:
+```js
+const fullGitHistory = require('full-git-history');
+
+/**
+ * @param {string[]} Args list.
+ * @param {function(Error=,Object=)} Callback for when the writting is finished.
+ */
+fullGitHistory(['~/foo-project', '-no', '-r'], (error, history) => {
+
+  if (error) {
+    console.error(`Cannot read history: ${error.message}`);
+    return;
+  }
+
+  console.log(`There are ${history.commits.length} commits.`);
+
+});
+```
 
 **full-git-history** work fine with world biggest git-repositories (like [Chromium](https://chromium.googlesource.com/chromium/src/), [Gecko](https://github.com/mozilla/gecko-dev), [parts of linux kernel](https://git.kernel.org/cgit/linux/kernel/git/clk/linux.git/) — each repository include about 500 000 commits), but in this case the output file will be automatically separated into several parts (all parts are valid json-files, which should be mixed) due to a max string size limit in the V8 ([https://github.com/nodejs/node/issues/3175](https://github.com/nodejs/node/issues/3175)).
 Also for checking such a large object, you should use the increase memory limit for the node (only for checking, not for getting history):
@@ -232,6 +263,11 @@ $ npm test
 For checking file /path/history.json with history:
 ```bash
 $ npm run check /path/history.json
+```
+
+For getting and checking history from repository /path/to/foo-project (without creating any files):
+```bash
+$ npm run get-and-check /path/to/foo-project
 ```
 
 ## License ##
