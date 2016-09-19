@@ -6,7 +6,12 @@ const fs = require('fs'),
       fullGitHistory = require('../src/full-git-history'),
       checkHistory   = require('./check-history');
 
-
+/**
+ * Throw error, if value in not true.
+ * @param  {*} value
+ * @param  {string} msg
+ * @throws {Error}
+ */
 const assert = (value, msg) => {
   if (value !== true) throw Error('Assert ' + (msg || ''));
 };

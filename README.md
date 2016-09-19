@@ -1,10 +1,12 @@
 # full-git-history #
 
-  [![NPM version][npm-image]][npm-url] ![node][node-image] ![dependencies][dependencies-image] [![License MIT][license-image]](LICENSE)
+[![NPM version][npm-image]][npm-url] ![node][node-image] ![dependencies][dependencies-image] [![License MIT][license-image]](LICENSE)
 
-  **full-git-history** extract all raw history (not only from the current branch) in an asynchronous non-blocking manner from the local git-repository (by path) and stores it into the json-file with the given name.
-  After this, the json-data can be used for plotting graphs, calculating statistics, searching commits, and so on.
-  Raw history include all information from repository except blobs and trees objects (i.e. all commits, tags, local and remote branches, symbolic refs, stash).
+[![NPM](https://nodei.co/npm/full-git-history.png)](https://nodei.co/npm/full-git-history/)
+
+**full-git-history** extract all raw history (not only from the current branch) in an asynchronous non-blocking manner from the local git-repository (by path) and stores it into the json-file with the given name.  
+After this, the json-data can be used for plotting graphs, calculating statistics, searching commits, and so on.  
+Raw history include all information from repository except blobs and trees objects (i.e. all commits, tags, local and remote branches, symbolic refs, stash).
 
 ## Usage ##
 You need a node version >=6.0.0. Of course, you must have installed Git.
@@ -271,7 +273,7 @@ $ npm run get-and-check /path/to/foo-project
 ```
 
 ## License ##
-  [MIT](LICENSE)
+[MIT](LICENSE)
 
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg "license-image"
 [dependencies-image]: https://img.shields.io/gemnasium/mathiasbynens/he.svg?maxAge=2592000 "dependencies-image"

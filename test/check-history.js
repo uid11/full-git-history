@@ -628,7 +628,7 @@ const plurale = number => plural(number) ? 'es' : '';
 /**
  * Sync reading JSON from filesystem.
  * @param  {string} name Filename.
- * @return {?Object} Parsed JSON value (null if no such file).
+ * @return {?Object} Parse JSON value (null if no such file).
  */
 const readJSON = name => {
   try {
