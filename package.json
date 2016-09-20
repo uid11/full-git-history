@@ -1,10 +1,10 @@
 {
   "name": "full-git-history",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Get and save a complete history of git-repository in file in JSON format.",
   "main": "src/full-git-history.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha test/test.js",
+    "test": "./node_modules/mocha/bin/mocha ./test/test.js",
     "check": "./test/check-history.js",
     "get-and-check": "node --max-old-space-size=8192 ./test/get-and-check.js"
   },

@@ -5,7 +5,11 @@
 const createFile = require('fs').createWriteStream,
       execFile = require('child_process').execFile;
 
-
+/**
+ * Throws when got error.
+ * @param  {?Error} error
+ * @throws {Error}
+ */
 const defaultCallback = error => {
   if (error) throw error;
 };
@@ -163,6 +167,8 @@ const fullGitHistory = (args, callback = defaultCallback) => {
 
   /**
    * Parse git references from text to JSON.
+   * @param {string} data Text with formatted refs.
+   * @param {?boolean} isEnd True, if this is last piece of data.
    */
   parse.refs = (data, isEnd) => {
     const refsList = (snip.refs + data).split(SEPARATOR);
@@ -262,6 +268,8 @@ const fullGitHistory = (args, callback = defaultCallback) => {
 
   /**
    * Parse git commits from text to JSON.
+   * @param {string} data Text with formatted commits.
+   * @param {?boolean} isEnd True, if this is last piece of data.
    */
   parse.commits = (data, isEnd) => {
     const commits = (snip.commits + data).split(SEPARATOR);
