@@ -423,6 +423,9 @@ const fullGitHistory = (args, callback = defaultCallback) => {
     }
   };
 
+  /**
+   * Use var for hoisting output (because errorHandler use output).
+   */
   var output;
   let outCount = -1;
   const outParts = options.out.split('.'),

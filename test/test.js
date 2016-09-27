@@ -7,7 +7,7 @@ const fs = require('fs'),
       checkHistory   = require('./check-history');
 
 /**
- * Throw error, if value in not true.
+ * Throw error, if value is not true.
  * @param  {*} value
  * @param  {string} msg
  * @throws {Error}
